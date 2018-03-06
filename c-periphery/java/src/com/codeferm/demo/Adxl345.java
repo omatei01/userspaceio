@@ -80,6 +80,23 @@ public class Adxl345 {
 	}
 
 	/**
+	 * Read full resolution mode setting.
+	 * 
+	 * Register 0x31 -- DATA_FORMAT (Read/Write)
+	 * 
+	 * When this bit is set to a value of 1, the device is in full resolution mode,
+	 * where the output resolution increases with the g range set by the range bits
+	 * to maintain a 4 mg/LSB scale factor. When the FULL_RES bit is set to 0, the
+	 * device is in 10-bit mode, and the range bits determine the maximum g range
+	 * and scale factor.
+	 * 
+	 * @return Full resolution enabled setting
+	 */
+	public boolean getFullResolution(final I2c i2c, final i2c_handle handle, final short addr) {
+		return (i2c.readReg(handle, addr, (short) 0x31) & 0x03) == 0x08;
+	}
+
+	/**
 	 * Get the device bandwidth rate.
 	 * 
 	 * Register 0x2C -- BW_RATE (Read/Write)
@@ -209,6 +226,40 @@ public class Adxl345 {
 	}
 
 	/**
+	 * Determines the scaling factor of raw values to obtain Gs.
+	 * 
+	 * The scale factor changes dependent on other device settings, so be sure to
+	 * get the scaling factor after writing desired settings.
+	 * 
+	 * @param range
+	 *            Use getRange.
+	 * 
+	 * @param resolution
+	 *            Use getFullResolution.
+	 * 
+	 * @return Raw value scaling factor.
+	 */
+	public float getScalingFactor(final short range, final boolean resolution) {
+		int bits = resolution ? 10 + range : 10;
+		float gRange = 4f * (float) Math.pow(2, range);
+		float bitRange = (float) Math.pow(2, bits);
+		return gRange / bitRange;
+	}
+
+	/**
+	 * Calculate scaling value.
+	 * 
+	 * @param value
+	 *            raw value.
+	 * @param scalingFactor
+	 *            Use getScalingFactor.
+	 * @return Scaled value.
+	 */
+	public float scaling(final int value, final float scalingFactor) {
+		return value * scalingFactor * 9.8f;
+	}
+
+	/**
 	 * Main program.
 	 * 
 	 * @param args
@@ -240,12 +291,17 @@ public class Adxl345 {
 			app.setRange(i2c, handle, address, (short) 0x00);
 			// 100 Hz
 			app.setDataRate(i2c, handle, address, (short) 0x0a);
-			System.out.println(String.format("Range = %d, data rate = %d", app.getRange(i2c, handle, address),
-					app.getDataRate(i2c, handle, address)));
+			// Save off range and data rate
+			short range = app.getRange(i2c, handle, address);
+			short dataRate = app.getDataRate(i2c, handle, address);
+			final float scalingFactor = app.getScalingFactor(range, app.getFullResolution(i2c, handle, address));
+			System.out.println(
+					String.format("Range = %d, data rate = %d, scaling factor = %f", range, dataRate, scalingFactor));
 			for (int i = 0; i < 100; i++) {
 				final Map<String, Integer> data = app.read(i2c, handle, address);
 				System.out.println(
-						String.format("x: %04d, y: %04d, z: %04d", data.get("x"), data.get("y"), data.get("z")));
+						String.format("x: %+5.2f, y: %+5.2f, z: %+5.2f", app.scaling(data.get("x"), scalingFactor),
+								app.scaling(data.get("y"), scalingFactor), app.scaling(data.get("z"), scalingFactor)));
 				TimeUnit.MILLISECONDS.sleep(500);
 			}
 		} else {
