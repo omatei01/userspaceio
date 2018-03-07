@@ -116,7 +116,7 @@ class adxl345:
                         self.setDataRate(handle, address, 0x0a)
                         print("Range = %d, data rate = %d" % (self.getRange(handle, address), self.getDataRate(handle, address)))
                         count = 0
-                        while count < 20:
+                        while count < 100:
                             stable, data = self.waitForStable(handle, address, 20, 2, 10, 0.05)                
                             if stable:
                                 print("Stable x: %04d, y: %04d, z: %04d" % (data[0], data[1], data[2]))
