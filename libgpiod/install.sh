@@ -54,7 +54,7 @@ if [ ! -d "$curdir/../../libgpiod" ]; then
 	sudo apt-get install -y libtool pkg-config	>> $logfile 2>&1
 	# Move to home dir
 	cd $curdir/../../ >> $logfile 2>&1
-    # If patchjava is True then install OpenCV's contrib package
+    # If usegitrepo is True then clone libgpiod, if False then use archive.
     if [ "$usegitrepo" = "True" ]; then	
 		log "Cloning libgpiod"
 		git clone https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git --branch v1.0.x >> $logfile 2>&1
