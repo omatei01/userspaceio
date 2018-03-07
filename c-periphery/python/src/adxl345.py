@@ -116,7 +116,7 @@ class adxl345:
                         self.setDataRate(handle, address, 0x0a)
                         print("Range = %d, data rate = %d" % (self.getRange(handle, address), self.getDataRate(handle, address)))
                         count = 0
-                        while count < 10:
+                        while count < 20:
                             stable, data = self.waitForStable(handle, address, 20, 3, 10, 0.1)                
                             if stable:
                                 print("Stable x: %04d, y: %04d, z: %04d" % (data[0], data[1], data[2]))
@@ -129,6 +129,8 @@ class adxl345:
                             count += 1
                     else:
                         print("Not ADXL345?")
+                    # LED off
+                    self.lib.gpiod_line_set_value(gpiod_line, 1)
                     self.i2c.close(handle)
                 else:
                     print("Unable to set line %d to output" % line)
