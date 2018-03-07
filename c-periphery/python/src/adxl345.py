@@ -88,8 +88,6 @@ class adxl345:
             lastZ = curZ
             time.sleep(sleepTime)
             count += 1
-        if count >= maxReads:
-            print("Not stable before %d reads" % maxReads)    
         return count < maxReads, (curX, curY, curZ)        
 
     def main(self, device, address):
@@ -104,12 +102,12 @@ class adxl345:
             self.setDataRate(handle, address, 0x0a)
             print("Range = %d, data rate = %d" % (self.getRange(handle, address), self.getDataRate(handle, address)))
             count = 0
-            while count < 5:
-                timeout, data = self.waitForStable(handle, address, 100, 3, 10, 0.1)                
-                if timeout:
-                    print("Not stable before timeout")
-                else:
+            while count < 10:
+                stable, data = self.waitForStable(handle, address, 100, 3, 10, 0.1)                
+                if stable:
                     print("Stable x: %04d, y: %04d, z: %04d" % (data[0], data[1], data[2]))
+                else:
+                    print("Not stable before timeout")
                 count += 1
         else:
             print("Not ADXL345?")
