@@ -67,6 +67,8 @@ class adxl345:
         return (x, y, z)
 
     def waitForStable(self, handle, addr, maxReads, maxDiff, maxInRange, sleepTime):
+        """Wait for unit to become stable or hit maxReads.
+        """
         count = 0
         lastX = 0
         lastY = 0
@@ -81,8 +83,6 @@ class adxl345:
                 inRange += 1
             else:
                 inRange = 0
-            if inRange >= maxInRange:
-                print("x: %04d, y: %04d, z: %04d" % (curX, curY, curZ))
             lastX = curX
             lastY = curY
             lastZ = curZ
@@ -90,7 +90,7 @@ class adxl345:
             count += 1
         if count >= maxReads:
             print("Not stable before %d reads" % maxReads)    
-        return (curX, curY, curZ)        
+        return count < maxReads, (curX, curY, curZ)        
 
     def main(self, device, address):
         handle = self.i2c.open(device)
@@ -105,7 +105,11 @@ class adxl345:
             print("Range = %d, data rate = %d" % (self.getRange(handle, address), self.getDataRate(handle, address)))
             count = 0
             while count < 5:
-                data = self.waitForStable(handle, address, 100, 3, 10, 0.1)                
+                timeout, data = self.waitForStable(handle, address, 100, 3, 10, 0.1)                
+                if timeout:
+                    print("Not stable before timeout")
+                else:
+                    print("Stable x: %04d, y: %04d, z: %04d" % (data[0], data[1], data[2]))
                 count += 1
         else:
             print("Not ADXL345?")
