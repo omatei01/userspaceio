@@ -117,7 +117,7 @@ class adxl345:
                         print("Range = %d, data rate = %d" % (self.getRange(handle, address), self.getDataRate(handle, address)))
                         count = 0
                         while count < 10:
-                            stable, data = self.waitForStable(handle, address, 100, 3, 10, 0.1)                
+                            stable, data = self.waitForStable(handle, address, 20, 3, 10, 0.1)                
                             if stable:
                                 print("Stable x: %04d, y: %04d, z: %04d" % (data[0], data[1], data[2]))
                                 # LED off
