@@ -51,13 +51,13 @@ if [ ! -d "$curdir/../../libgpiod" ]; then
 	log "Installing Linux headers $package"
 	sudo apt-get install -y $package >> $logfile 2>&1
 	log "Installing required build packages"
-	sudo apt-get install -y libtool pkg-config autoconf-archive	>> $logfile 2>&1
+	sudo apt-get install -y libtool pkg-config autoconf-archive python3-dev >> $logfile 2>&1
 	# Move to home dir
 	cd $curdir/../../ >> $logfile 2>&1
     # If usegitrepo is True then clone libgpiod, if False then use archive.
     if [ "$usegitrepo" = "True" ]; then	
-		log "Cloning libgpiod"
-		git clone https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git --branch v1.0.x >> $logfile 2>&1
+		log "Cloning libgpiod master"
+		git clone https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git >> $logfile 2>&1
 	else
 		# Clean up
 		log "Removing $tmpdir"
@@ -77,7 +77,8 @@ if [ ! -d "$curdir/../../libgpiod" ]; then
 	mkdir -p $curdir/include/linux >> $logfile 2>&1
 	cp /usr/src/linux-headers-$(uname -r)/include/linux/compiler_types.h $curdir/include/linux/. >> $logfile 2>&1	
 	log "Running autogen"
-	./autogen.sh --enable-tools=yes --prefix=/usr/local CFLAGS="-I/usr/src/linux-headers-$(uname -r)/include/uapi -I$curdir/include" >> $logfile 2>&1
+	export PYTHON_VERSION=3
+	./autogen.sh --enable-tools=yes --enable-bindings-python --prefix=/usr/local CFLAGS="-I/usr/src/linux-headers-$(uname -r)/include/uapi -I$curdir/include" >> $logfile 2>&1
 	log "Running make"
 	make >> $logfile 2>&1
 	log "Make install"
