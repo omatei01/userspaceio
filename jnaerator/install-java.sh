@@ -23,23 +23,23 @@ log(){
 
 # JDK archive stuff
 javahome=/usr/lib/jvm/jdk1.8.0
-jdkurl="http://download.oracle.com/otn-pub/java/jdk/8u162-b12/0da788060d494f5095bf8624735fa2f1/"
-jdkver="jdk1.8.0_162"
+jdkurl="http://download.oracle.com/otn-pub/java/jdk/8u172-b11/a58eab1ec242421181065cdc37240b08/"
+jdkver="jdk1.8.0_172"
 # ARM 32
 if [ "$arch" = "armv7l" ]; then
-	jdkarchive="jdk-8u162-linux-arm32-vfp-hflt.tar.gz"
+	jdkarchive="jdk-8u172-linux-arm32-vfp-hflt.tar.gz"
 	jnaplatform="https://github.com/java-native-access/jna/raw/master/lib/native/linux-arm.jar"
 # ARM 64
 elif [ "$arch" = "aarch64" ]; then
-	jdkarchive="jdk-8u162-linux-arm64-vfp-hflt.tar.gz"
+	jdkarchive="jdk-8u172-linux-arm64-vfp-hflt.tar.gz"
 	jnaplatform="https://github.com/java-native-access/jna/raw/master/lib/native/linux-aarch64.jar"
 # X86
 elif [ "$arch" = "i586" ] || [ "$arch" = "i686" ]; then
-	jdkarchive="jdk-8u162-linux-i586.tar.gz"
+	jdkarchive="jdk-8u172-linux-i586.tar.gz"
 	jnaplatform="https://github.com/java-native-access/jna/raw/master/lib/native/linux-x86.jar"
 # X86_64	
 elif [ "$arch" = "x86_64" ]; then
-	jdkarchive="jdk-8u162-linux-x64.tar.gz"
+	jdkarchive="jdk-8u172-linux-x64.tar.gz"
 	jnaplatform="https://github.com/java-native-access/jna/raw/master/lib/native/linux-x86-64.jar"
 fi
 
