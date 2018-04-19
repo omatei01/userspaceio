@@ -51,7 +51,7 @@ if [ ! -d "$curdir/../../libgpiod" ]; then
 	log "Installing Linux headers $package"
 	sudo apt-get install -y $package >> $logfile 2>&1
 	log "Installing required build packages"
-	sudo apt-get install -y libtool pkg-config	>> $logfile 2>&1
+	sudo apt-get install -y libtool pkg-config autoconf-archive	>> $logfile 2>&1
 	# Move to home dir
 	cd $curdir/../../ >> $logfile 2>&1
     # If usegitrepo is True then clone libgpiod, if False then use archive.
