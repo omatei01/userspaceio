@@ -8,7 +8,7 @@
 # Use tar.gz instead of git repo
 usegitrepo="True"
 libgpiodurl="https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git/snapshot/"
-libgpiodarchive="libgpiod-1.0.tar.gz"
+libgpiodarchive="libgpiod-1.0.1.tar.gz"
 
 # Get current directory
 curdir=$PWD

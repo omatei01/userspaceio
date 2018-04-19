@@ -11,6 +11,5 @@ encoding//libgpiod/python/src/buttonthread.py=utf-8
 encoding//libgpiod/python/src/buttonwait.py=utf-8
 encoding//libgpiod/python/src/hcsr501.py=utf-8
 encoding//libgpiod/python/src/ledtest.py=utf-8
-encoding//libgpiod/python/src/libgpiod/libgpiod.py=utf-8
 encoding//pwmio/python/src/ledflash.py=utf-8
 encoding//pwmio/python/src/libpwmio/libpwmio.py=utf-8

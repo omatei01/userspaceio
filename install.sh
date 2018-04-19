@@ -33,10 +33,6 @@ cd $curdir/jnaerator
 cd $curdir/libgpiod
 ./install.sh
 
-# Generate libgpiod Python bindings
-cd $curdir/libgpiod
-./python-bindings.sh
-
 # Generate libgpiod Java bindings
 cd $curdir/libgpiod
 ./java-bindings.sh
