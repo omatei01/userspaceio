@@ -13,6 +13,9 @@ SBC model. The possibility of using other JVM based languages such as Groovy,
 Kotlin, Scala, etc. opens up language opprtunties that do not currently exist
 in the IoT space.
 
+**Master branch is being prepared for libgpiod 1.1. Use 1.0 branch for libgpiod
+1.0 support.**
+
 ### SBC configuration
 * If you are using Armbian then use `armbian-config` or edit `/boot/armbianEnv.txt`
 to configure various devices. User space devices are exposed through /dev or
