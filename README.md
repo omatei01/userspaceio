@@ -34,8 +34,7 @@ bit platforms gives you a wide range of SBC choices.
 
 ### Python bindings notes
 [CFFI](https://cffi.readthedocs.io/en/latest) is used to create the Python 3
-bindings. Some macros and a few functions would not work with CFFI's cdef.
-These are noted below and do no impact functionality.
+bindings.
 
 ### Java bindings notes
 [JNAerator](https://github.com/nativelibs4java/JNAerator) is used to create
@@ -87,11 +86,11 @@ Since linux 4.8 the GPIO sysfs interface is deprecated. User space should use
 the character device instead. libgpiod encapsulates the ioctl calls and data
 structures behind a straightforward API. **Note:** Edit `usegitrepo` in
 [install.sh](https://github.com/sgjava/userspaceio/blob/master/libgpiod/install.sh)
-to use libgpiod-1.0.tar.gz (defaut) or git branch v1.0.x.
+to use libgpiod-1.0.1.tar.gz (defaut) or git branch v1.0.x.
 
 Since libgpiod is not currently present in most Linux distributions you need to
 build it from source. This project automates the build process on Armbian, but
-also includes the steps to build manually on your faviorite Linux distribution.
+should build on your faviorite Debian Linux distribution.
 
 #### How pins are mapped
 This is based on testing on a NanoPi Duo. gpiochip0 starts at 0 and gpiochip1
@@ -118,12 +117,7 @@ libgpiod always starts at 0 and calculate the offset. Thus gpiochip1 starts at
 352 and the on board button is at 355, so 355 - 352 = 3 for libgpiod.
 
 #### Python bindings
-Some macros and a few functions would not work with CFFI's cdef. These were
-bulk functions that can be simulated in Python:
-* static inline void gpiod_line_bulk_init(struct gpiod_line_bulk *bulk)
-* static inline void gpiod_line_bulk_add(struct gpiod_line_bulk *bulk,
-* static inline struct gpiod_line *gpiod_line_bulk_get_line(struct gpiod_line_bulk *bulk, unsigned int offset)
-* static inline unsigned int gpiod_line_bulk_num_lines(struct gpiod_line_bulk *bulk)
+libgpiod 1.1 includes Python bindings, so I do not generate them any more.
 
 To run demos:
 * `alias python=python3`
