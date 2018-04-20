@@ -46,9 +46,9 @@ class hcsr501:
             # If led arg passed then turn on and off based on event type
             if led_line:
                 if event.type == gpiod.LineEvent.RISING_EDGE:
-                    led_line.set_value(1)
+                    led_line.set_value(0)
                 else:
-                    led_line.set_value(0)            
+                    led_line.set_value(1)            
 
 
 if __name__ == "__main__":
