@@ -49,6 +49,7 @@ class hcsr501:
                     led_line.set_value(0)
                 else:
                     led_line.set_value(1)            
+        print("Timeout exit")
 
 
 if __name__ == "__main__":
