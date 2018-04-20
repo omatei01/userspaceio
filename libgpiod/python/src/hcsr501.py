@@ -20,14 +20,14 @@ class hcsr501:
         if chip_led != chip_sensor:
             self.chip_led = gpiod.Chip(chip_led, gpiod.Chip.OPEN_BY_PATH)
         else:
-            self.chip_led = self.chip_button
+            self.chip_led = self.chip_sensor
 
     def main(self, sensor, led):
         """Show motion for 30 seconds.
         """
         print("Button name: %s, label: %s, lines: %d" % (self.chip_sensor.name(), self.chip_sensor.label(), self.chip_sensor.num_lines()))
         print("LED name: %s, label: %s, lines: %d" % (self.chip_led.name(), self.chip_led.label(), self.chip_led.num_lines()))
-        sensor_line = self.chip_button.get_line(sensor)
+        sensor_line = self.chip_sensor.get_line(sensor)
         sensor_line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_EV_BOTH_EDGES)
         if led:
             led_line = self.chip_led.get_line(led)
