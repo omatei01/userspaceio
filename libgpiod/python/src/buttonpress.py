@@ -34,7 +34,7 @@ class buttonpress:
         print("Name: %s, label: %s, lines: %d" % (self.chip.name(), self.chip.label(), self.chip.num_lines()))
         button_line = self.chip.get_line(button)
         button_line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_EV_BOTH_EDGES)
-        if led is not None:
+        if led:
             led_line = self.chip.get_line(led)
             led_line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_DIR_OUT)
         print("Press and release button, timeout in 10 seconds\n")
