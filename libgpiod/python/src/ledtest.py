@@ -28,7 +28,7 @@ class ledtest:
     def main(self, line):
         """Turn LED on and off once.
         """
-        print("Name: %s, label: %s, lines: %d" % (self.chip.name().decode('utf-8'), self.chip.label().decode('utf-8'), self.chip.num_lines()))
+        print("Name: %s, label: %s, lines: %d" % (self.chip.name(), self.chip.label(), self.chip.num_lines()))
         line = self.chip.get_line(line)
         line.request(consumer=sys.argv[0], type=gpiod.LINE_REQ_DIR_OUT)
         line.set_value(0)         
