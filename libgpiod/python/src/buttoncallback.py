@@ -36,7 +36,7 @@ class buttoncallback:
         line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_EV_BOTH_EDGES)
         print("Press and release button, timeout in 10 seconds\n")
         ev_line = line.event_wait(sec=5)
-        event = ev_line.event_read()
+        event = line.event_read()
         self.show_event(event)
 
 
