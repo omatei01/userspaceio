@@ -42,6 +42,8 @@ class buttonpress:
         if led:
             led_line = self.chip_led.get_line(led)
             led_line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_DIR_OUT)
+        else:
+            led_line = None    
         print("Press and release button, timeout in 10 seconds\n")
         while button_line.event_wait(sec=10):
             event = button_line.event_read()
