@@ -40,7 +40,7 @@ class buttonthread:
         """
         print("Name: %s, label: %s, lines: %d" % (self.chip.name(), self.chip.label(), self.chip.num_lines()))
         # Kick off thread
-        thread = threading.Thread(target=self.wait_for_edge, args=(line, 5,))
+        thread = threading.Thread(target=self.wait_for_edge, args=(line, 15,))
         thread.start()
         count = 0
         # Just simulating main program doing something else
