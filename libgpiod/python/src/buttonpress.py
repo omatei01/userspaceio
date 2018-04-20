@@ -60,5 +60,5 @@ if __name__ == "__main__":
     parser.add_argument("--chip_led", help="GPIO chip name (default '/dev/gpiochip0')", type=str, default="/dev/gpiochip0")
     parser.add_argument("--led", help="GPIO line number (default 203 IOG11 on NanoPi Duo)", type=int, default=203)
     args = parser.parse_args()
-    obj = buttonpress(args.chip)
+    obj = buttonpress(args.chip_button, args.chip_led)
     obj.main(args.button, args.led)
