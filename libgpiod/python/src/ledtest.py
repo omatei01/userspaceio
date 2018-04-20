@@ -39,6 +39,7 @@ class ledtest:
             # LED off
             line.set_value(1)
             print("LED off")
+            time.sleep(1)
             count += 1
         line.release()
 
