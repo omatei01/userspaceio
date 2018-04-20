@@ -31,12 +31,15 @@ class ledtest:
         print("Name: %s, label: %s, lines: %d" % (self.chip.name(), self.chip.label(), self.chip.num_lines()))
         line = self.chip.get_line(line)
         line.request(consumer=sys.argv[0], type=gpiod.LINE_REQ_DIR_OUT)
-        line.set_value(0)         
-        print("\nLED on")
-        time.sleep(3)
-        # LED off
-        line.set_value(1)
-        print("LED off")
+        count = 0
+        while count < 10:
+            line.set_value(0)         
+            print("\nLED on")
+            time.sleep(1)
+            # LED off
+            line.set_value(1)
+            print("LED off")
+            count += 1
         line.release()
 
 
