@@ -3,7 +3,8 @@
 # See LICENSE.md for details.
 
 """
-Simple blocking event loop example.
+Simple blocking event loop reads built in button and turns LED on and off based
+on line edge. If you do not pass in --led then only button status is displayed.
 -------------
 Should work on any board with a button built in. Just change chip and line
 value as needed.
@@ -58,7 +59,7 @@ if __name__ == "__main__":
     parser.add_argument("--chip_button", help="GPIO chip name (default '/dev/gpiochip1')", type=str, default="/dev/gpiochip1")
     parser.add_argument("--button", help="GPIO line number (default 3 button on NanoPi Duo)", type=int, default=3)
     parser.add_argument("--chip_led", help="GPIO chip name (default '/dev/gpiochip0')", type=str, default="/dev/gpiochip0")
-    parser.add_argument("--led", help="GPIO line number (default 203 IOG11 on NanoPi Duo)", type=int, default=203)
+    parser.add_argument("--led", help="GPIO line number", type=int)
     args = parser.parse_args()
     obj = buttonpress(args.chip_button, args.chip_led)
     obj.main(args.button, args.led)
