@@ -9,7 +9,7 @@ Should work on any board with a button built in. Just change chip and line
 value as needed.
 """
 
-import sys, time, _thread, gpiod
+import sys, time, threading, gpiod
 from argparse import *
 
 
@@ -40,7 +40,8 @@ class buttonthread:
         """
         print("Name: %s, label: %s, lines: %d" % (self.chip.name(), self.chip.label(), self.chip.num_lines()))
         # Kick off thread
-        thread = _thread.start_new_thread(self.wait_for_edge, (line, 5,))
+        thread = threading.Thread(target=self.wait_for_edge, args=(line, 5,))
+        thread.start()
         count = 0
         # Just simulating main program doing something else
         while count < 30 and thread.isAlive():
