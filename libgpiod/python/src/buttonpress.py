@@ -3,7 +3,7 @@
 # See LICENSE.md for details.
 
 """
-Use libgpiod context less event loop to implement blocking callback
+Simple blocking event loop example.
 -------------
 Should work on any board with a button built in. Just change chip and line
 value as needed.
@@ -13,7 +13,7 @@ import sys, time, gpiod
 from argparse import *
 
 
-class buttoncallback:
+class buttonpress:
     
     def __init__(self, chip):
         """Create library and ffi interfaces.
@@ -28,22 +28,36 @@ class buttoncallback:
         else:
             raise TypeError('Invalid event type')
 
-    def main(self, line):
+    def main(self, button, led):
         """Print edge events for 10 seconds.
         """         
         print("Name: %s, label: %s, lines: %d" % (self.chip.name(), self.chip.label(), self.chip.num_lines()))
-        line = self.chip.get_line(line)
-        line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_EV_BOTH_EDGES)
+        button_line = self.chip.get_line(button)
+        button_line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_EV_BOTH_EDGES)
+        if led is not None:
+            led_line = self.chip.get_line(led)
+            led_line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_DIR_OUT)
         print("Press and release button, timeout in 10 seconds\n")
-        while line.event_wait(sec=10):
-            event = line.event_read()
+        while button_line.event_wait(sec=10):
+            event = button_line.event_read()
             self.show_event(event)
+            # If led arg passed then turn on and off based on event type
+            if led_line:
+                if event.type == gpiod.LineEvent.RISING_EDGE:
+                    led_line.set_value(1)
+                else:
+                    led_line.set_value(0)
 
 
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--chip", help="GPIO chip name (default '/dev/gpiochip1')", type=str, default="/dev/gpiochip1")
-    parser.add_argument("--line", help="GPIO line number (default 3 button on NanoPi Duo)", type=int, default=3)
+    parser.add_argument("--button", help="GPIO line number (default 3 button on NanoPi Duo)", type=int, default=3)
+    parser.add_argument("--led", help="GPIO line number (default 203 IOG11 on NanoPi Duo)", type=int, default=203)
     args = parser.parse_args()
-    obj = buttoncallback(args.chip)
-    obj.main(args.line)
+    if args.led:
+        led = args.led
+    else:
+        led = None
+    obj = buttonpress(args.chip)
+    obj.main(args.button, led)
