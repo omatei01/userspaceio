@@ -8,61 +8,55 @@ HC-SR501 sensor example
 Monitor rising edge (motion detected) and falling edge (no motion)
 """
 
-import sys, time
+import sys, time, gpiod
 from argparse import *
-from cffi import FFI
-from libgpiod import libgpiod
-
 
 class hcsr501:
     
-    def __init__(self):
-        """Create library and ffi interfaces.
+    def __init__(self, chip_sensor, chip_led):
+        """Handle possibility of sensor and led on different GPIO chips
         """         
-        self.gpiod = libgpiod.libgpiod()
-        self.lib = self.gpiod.lib
-        self.ffi = self.gpiod.ffi
+        self.chip_sensor = gpiod.Chip(chip_sensor, gpiod.Chip.OPEN_BY_PATH)
+        if chip_led != chip_sensor:
+            self.chip_led = gpiod.Chip(chip_led, gpiod.Chip.OPEN_BY_PATH)
+        else:
+            self.chip_led = self.chip_button
 
-        # Inner Callback function
-        @self.ffi.callback("int (int evtype, unsigned int offset, const struct timespec *ts, void *data)")
-        def motionCallback(evtype, offset, ts, data):
-            # Use a try/except or an exception will cause an endless loop
-            try:
-                if evtype == self.lib.GPIOD_CTXLESS_EVENT_CB_TIMEOUT:
-                    rc = self.lib.GPIOD_CTXLESS_EVENT_CB_RET_STOP
-                    print("Timeout")
-                else:
-                    rc = self.lib.GPIOD_CTXLESS_EVENT_CB_RET_OK
-                    if evtype == self.lib.GPIOD_CTXLESS_EVENT_CB_RISING_EDGE:
-                        print("Motion detected %s" % time.strftime('%m/%d/%Y %H:%M:%S', time.localtime(ts.tv_sec)))
-                    else:
-                        print("No motion       %s" % time.strftime('%m/%d/%Y %H:%M:%S', time.localtime(ts.tv_sec)))
-            except:
-                rc = self.lib.GPIOD_CTXLESS_EVENT_CB_RET_ERR
-                print("Unexpected error:", sys.exc_info()[0])
-            return rc
-
-        # Expose callback to object instance
-        self.motionCallback = motionCallback
-
-    def main(self, chip, line):
+    def main(self, sensor, led):
         """Show motion for 30 seconds.
-        """         
-        print("HC-SR501 motion detector, timeout in 300 seconds\n")
-        # Consumer is script name without .py
-        consumer = sys.argv[0][:-3]
-        # 30 second timeout
-        timespec = self.ffi.new("struct timespec*")
-        timespec.tv_sec = 300
-        # Blocking poll until timeout, note gpiod_simple_event_poll_cb is passed as a NULL
-        if self.lib.gpiod_ctxless_event_loop(args.chip.encode('utf-8'), args.line, False, consumer.encode('utf-8'), timespec, self.ffi.NULL, self.motionCallback, self.ffi.NULL) != 0:
-            print("gpiod_ctxless_event_loop error, check --chip and --line values")        
+        """
+        print("Button name: %s, label: %s, lines: %d" % (self.chip_sensor.name(), self.chip_sensor.label(), self.chip_sensor.num_lines()))
+        print("LED name: %s, label: %s, lines: %d" % (self.chip_led.name(), self.chip_led.label(), self.chip_led.num_lines()))
+        sensor_line = self.chip_button.get_line(sensor)
+        sensor_line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_EV_BOTH_EDGES)
+        if led:
+            led_line = self.chip_led.get_line(led)
+            led_line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_DIR_OUT)
+        else:
+            led_line = None
+        print("Program will exit after 60 seconds of no activity\n")
+        while sensor_line.event_wait(sec=60):
+            event = sensor_line.event_read()
+            if event.type == gpiod.LineEvent.RISING_EDGE:
+                print("Motion detected %s" % time.strftime('%m/%d/%Y %H:%M:%S', time.localtime(event.sec)))
+            elif event.type == gpiod.LineEvent.FALLING_EDGE:
+                print("No motion       %s" % time.strftime('%m/%d/%Y %H:%M:%S', time.localtime(event.sec)))
+            else:
+                raise TypeError('Invalid event type')
+            # If led arg passed then turn on and off based on event type
+            if led_line:
+                if event.type == gpiod.LineEvent.RISING_EDGE:
+                    led_line.set_value(1)
+                else:
+                    led_line.set_value(0)            
 
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("--chip", help="GPIO chip name (default '/dev/gpiochip0')", type=str, default="/dev/gpiochip0")
-    parser.add_argument("--line", help="GPIO line number (default 203 IOG11 on NanoPi Duo)", type=int, default=203)
+    parser.add_argument("--chip_sensor", help="GPIO chip name (default '/dev/gpiochip1')", type=str, default="/dev/gpiochip1")
+    parser.add_argument("--sensor", help="GPIO line number (default 11 GPIOL11/IR-RX on NanoPi Duo)", type=int, default=11)
+    parser.add_argument("--chip_led", help="GPIO chip name (default '/dev/gpiochip0')", type=str, default="/dev/gpiochip0")
+    parser.add_argument("--led", help="GPIO line number", type=int)
     args = parser.parse_args()
-    obj = hcsr501()
-    obj.main(args.chip, args.line)
+    obj = hcsr501(args.chip_sensor, args.chip_led)
+    obj.main(args.sensor, args.led)

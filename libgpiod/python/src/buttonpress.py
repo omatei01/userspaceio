@@ -25,18 +25,11 @@ class buttonpress:
         else:
             self.chip_led = self.chip_button
 
-    def show_event(self, event):
-        if event.type == gpiod.LineEvent.RISING_EDGE:
-            print("Rising  edge timestamp %s" % time.strftime('%m/%d/%Y %H:%M:%S', time.localtime(event.sec)))
-        elif event.type == gpiod.LineEvent.FALLING_EDGE:
-            print("Falling edge timestamp %s" % time.strftime('%m/%d/%Y %H:%M:%S', time.localtime(event.sec)))
-        else:
-            raise TypeError('Invalid event type')
-
     def main(self, button, led):
         """Print edge events for 10 seconds.
         """         
-        print("Name: %s, label: %s, lines: %d" % (self.chip_button.name(), self.chip_button.label(), self.chip_button.num_lines()))
+        print("Button name: %s, label: %s, lines: %d" % (self.chip_button.name(), self.chip_button.label(), self.chip_button.num_lines()))
+        print("LED name: %s, label: %s, lines: %d" % (self.chip_led.name(), self.chip_led.label(), self.chip_led.num_lines()))
         button_line = self.chip_button.get_line(button)
         button_line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_EV_BOTH_EDGES)
         if led:
@@ -44,10 +37,15 @@ class buttonpress:
             led_line.request(consumer=sys.argv[0][:-3], type=gpiod.LINE_REQ_DIR_OUT)
         else:
             led_line = None    
-        print("Press and release button, timeout in 10 seconds\n")
+        print("Press and release button, timeout in 10 seconds after last press\n")
         while button_line.event_wait(sec=10):
             event = button_line.event_read()
-            self.show_event(event)
+            if event.type == gpiod.LineEvent.RISING_EDGE:
+                print("Rising  edge timestamp %s" % time.strftime('%m/%d/%Y %H:%M:%S', time.localtime(event.sec)))
+            elif event.type == gpiod.LineEvent.FALLING_EDGE:
+                print("Falling edge timestamp %s" % time.strftime('%m/%d/%Y %H:%M:%S', time.localtime(event.sec)))
+            else:
+                raise TypeError('Invalid event type')
             # If led arg passed then turn on and off based on event type
             if led_line:
                 if event.type == gpiod.LineEvent.RISING_EDGE:
