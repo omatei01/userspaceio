@@ -38,7 +38,7 @@ class buttonthread:
     def main(self, line):
         """Use thread to wait for edge events while main method does other stuff.
         """
-        print("Name: %s, label: %s, lines: %d" % (self.chip.name(), self.button.label(), self.chip.num_lines()))
+        print("Name: %s, label: %s, lines: %d" % (self.chip.name(), self.chip.label(), self.chip.num_lines()))
         # Kick off thread
         thread = _thread.start_new_thread(self.wait_for_edge, (line, 5,))
         count = 0
