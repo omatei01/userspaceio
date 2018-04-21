@@ -57,7 +57,9 @@ if [ ! -d "$curdir/../../libgpiod" ]; then
     # If usegitrepo is True then clone libgpiod, if False then use archive.
     if [ "$usegitrepo" = "True" ]; then	
 		log "Cloning libgpiod master"
-		git clone https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git >> $logfile 2>&1
+		# Test fix for threading issue
+		#git clone https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git >> $logfile 2>&1
+		git clone  https://github.com/brgl/libgpiod.git --branch topic/python-locking  >> $logfile 2>&1
 	else
 		# Clean up
 		log "Removing $tmpdir"
