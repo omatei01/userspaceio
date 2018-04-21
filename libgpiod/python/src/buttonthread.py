@@ -44,9 +44,9 @@ class buttonthread:
         thread.start()
         count = 0
         # Just simulating main program doing something else
-        while count < 30:
+        while count < 10:
             #print("Main program doing stuff, press button")
-            #time.sleep(1)
+            time.sleep(1)
             count += 1
         print("Past while")    
         # If thread is still alive wait for it to time out
