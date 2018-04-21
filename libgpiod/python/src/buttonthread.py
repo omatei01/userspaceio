@@ -42,11 +42,10 @@ class buttonthread:
         # Kick off thread
         thread = threading.Thread(target=self.wait_for_edge, args=(line, 15,))
         thread.start()
-        print("After thread start")
         count = 0
         # Just simulating main program doing something else
         while count < 30:
-            print("Main program doing stuff, press button")
+            #print("Main program doing stuff, press button")
             #time.sleep(1)
             count += 1
         # If thread is still alive wait for it to time out
