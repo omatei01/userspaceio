@@ -48,6 +48,7 @@ class buttonthread:
             #print("Main program doing stuff, press button")
             #time.sleep(1)
             count += 1
+        print("Past while")    
         # If thread is still alive wait for it to time out
         if thread.isAlive():
             print("Waiting for thread to exit, stop pressing button for 5 seconds")
