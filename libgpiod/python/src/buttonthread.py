@@ -44,7 +44,7 @@ class buttonthread:
         thread.start()
         count = 0
         # Just simulating main program doing something else
-        while count < 10:
+        while count < 5:
             #print("Main program doing stuff, press button")
             time.sleep(1)
             count += 1
