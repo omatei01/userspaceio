@@ -11,6 +11,7 @@ Monitor rising edge (motion detected) and falling edge (no motion)
 import sys, time, gpiod
 from argparse import *
 
+
 class hcsr501:
     
     def __init__(self, chip_sensor, chip_led):

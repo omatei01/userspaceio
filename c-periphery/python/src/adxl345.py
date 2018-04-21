@@ -15,6 +15,7 @@ from cffi import FFI
 from libperiphery import libperipheryi2c
 from libgpiod import libgpiod
 
+
 class adxl345:
     
     def __init__(self):
