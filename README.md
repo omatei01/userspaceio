@@ -13,7 +13,7 @@ SBC model. The possibility of using other JVM based languages such as Groovy,
 Kotlin, Scala, etc. opens up language opprtunties that do not currently exist
 in the IoT space.
 
-**Master branch is being prepared for libgpiod 1.1. Use 1.0 branch for libgpiod
+**Master branch is using libgpiod 1.1. Use 1.0 branch for libgpiod
 1.0 support.**
 
 ### SBC configuration
@@ -94,7 +94,7 @@ should build on your faviorite Debian Linux distribution.
 
 #### How pins are mapped
 This is based on testing on a NanoPi Duo. gpiochip0 starts at 0 and gpiochip1
-start at 352. Consider the following examples:
+start at 352. Consider the following table:
 
 |Name                           |Chip Name |Line|sysfs|
 | ----------------------------- | -------- | -- | --- |
@@ -117,7 +117,7 @@ libgpiod always starts at 0 and calculate the offset. Thus gpiochip1 starts at
 352 and the on board button is at 355, so 355 - 352 = 3 for libgpiod.
 
 #### Python bindings
-libgpiod 1.1 includes Python bindings, so I do not generate them any more.
+libgpiod 1.1 includes Python bindings, so CFFI is not used.
 
 To run demos:
 * `alias python=python3`
