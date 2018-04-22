@@ -8,7 +8,6 @@ encoding//c-periphery/python/src/serialtest.py=utf-8
 encoding//c-periphery/python/src/spiloopback.py=utf-8
 encoding//libgpiod/python/src/buttonpress.py=utf-8
 encoding//libgpiod/python/src/buttonthread.py=utf-8
-encoding//libgpiod/python/src/buttonwait.py=utf-8
 encoding//libgpiod/python/src/hcsr501.py=utf-8
 encoding//libgpiod/python/src/ledtest.py=utf-8
 encoding//pwmio/python/src/ledflash.py=utf-8
