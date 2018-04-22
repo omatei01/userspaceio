@@ -26,7 +26,7 @@ class ledtest:
         self.chip = gpiod.Chip(chip, gpiod.Chip.OPEN_BY_NUMBER)
     
     def main(self, line):
-        """Turn LED on and off once.
+        """Turn LED on and off.
         """
         print("Name: %s, label: %s, lines: %d" % (self.chip.name(), self.chip.label(), self.chip.num_lines()))
         line = self.chip.get_line(line)
