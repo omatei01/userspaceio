@@ -62,7 +62,7 @@ if [ ! -d "$curdir/../../libgpiod" ]; then
 		log "Cloning libgpiod master"
 		# Test fix for threading issue
 		#git clone https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git >> $logfile 2>&1
-		git clone  "$libgpiodgiturl"  >> $logfile 2>&1
+		git clone $libgpiodgiturl >> $logfile 2>&1
 	else
 		# Clean up
 		log "Removing $tmpdir"
