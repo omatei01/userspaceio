@@ -9,9 +9,7 @@
 usegitrepo="True"
 libgpiodurl="https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git/snapshot/"
 libgpiodarchive="libgpiod-1.0.1.tar.gz"
-# This fixes https://github.com/brgl/libgpiod/issues/26
-libgpiodgiturl="https://github.com/brgl/libgpiod.git --branch topic/python-locking"
-#libgpiodgiturl="https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git"
+libgpiodgiturl="https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git"
 
 # Get current directory
 curdir=$PWD
