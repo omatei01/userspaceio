@@ -32,7 +32,7 @@ fi
 if ! command -v pip3
 then
 	log "Installing pip and cffi"
-	sudo apt-get -y install python3-pip >>mc $logfile 2>&1
+	sudo apt-get -y install python3-pip >> $logfile 2>&1
 	sudo -H pip3 install --upgrade pip setuptools >> $logfile 2>&1
 	sudo -H pip3 install --upgrade cffi >> $logfile 2>&1
 fi
