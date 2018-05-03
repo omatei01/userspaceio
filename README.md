@@ -26,8 +26,7 @@ Check each log to be sure there were no errors after running install.sh. Submit
 a PR if you would like a different distribution supported. Conditionals can be
 added to the current scripts to handle different detectable distributions. 
 * You need kernel 4.8 or greater to use libgpiod.
-* Non-root access works for everything except PWM. I'm working on a solution
-for this.
+* You need kernel 4.16 or greater to use non-root access for PWM.
 * I have tested NanoPi Duo v1.1 for 32 bit and NanoPi Neo 2 Plus for 64 bit using
 the latest Armbian release. The ability to switch seemlessly between 32 and 64
 bit platforms gives you a wide range of SBC choices.
@@ -78,6 +77,11 @@ chown -R root:i2c /dev/i2c-0
 chmod -R ug+rw /dev/i2c-0
 chown -R root:spi /dev/spidev1.0
 chmod -R ug+rw /dev/spidev1.0</code></pre>
+* `sudo nano /etc/udev/rules.d/99-com.rules`
+<pre><code>SUBSYSTEM=="pwm*", PROGRAM="/bin/sh -c '\
+        chown -R root:gpio /sys/class/pwm && chmod -R 770 /sys/class/pwm;\
+        chown -R root:gpio /sys/devices/platform/soc/*.pwm/pwm/pwmchip* && chmod -R 770 /sys/devices/platform/soc/*.pwm/pwm/pwmchip*\
+'"</code></pre>
 
 ## libgpiod
 [libgpiod](https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git/tree/README)
@@ -154,8 +158,8 @@ to run Triple Axis Accelerometer & Gyro MPU-6050 sensor example.
 
 ## pwmio
 I wasn't able to find a good C library that handled hardware PWM, so I worte one
-based on /sys/class/pwm. Currently I'm unable to get /sys/class/pwm working
-without root access. I will continue to explore how to do this.
+based on /sys/class/pwm. Your SBC must support hardware PWM and be exposed to
+the kernel via /sys/class/pwm.
 
 [![LED flash video](images/ledflash.mp4.png)](https://youtu.be/K4PbIpPA1dg)
 
