@@ -60,7 +60,7 @@ if [ ! -d "$curdir/../../libgpiod" ]; then
 		log "Installing Linux headers $package"
 		sudo apt-get install -y $package >> $logfile 2>&1
 	else
-        log "$package not found, using kernel version $defkerver"
+        log "$package not found, using kernel version $defkerver that must be installed already"
         kerver=$defkerver
 	fi
 	log "Installing required build packages"
