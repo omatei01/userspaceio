@@ -11,6 +11,9 @@ libgpiodurl="https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git/snapshot/
 libgpiodarchive="libgpiod-1.0.1.tar.gz"
 libgpiodgiturl="https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git"
 
+# Default kernel version to use this if linux header source package not found
+defkerver="4.15.0-15"
+
 # Get current directory
 curdir=$PWD
 
@@ -52,12 +55,13 @@ if [ ! -d "$curdir/../../libgpiod" ]; then
 	# Check if package exists
 	if [[ $(apt-cache search "$package" | grep "$package") ]]; then
         log "$package found"
+        kerver=$(uname -r)
+		log "Installing Linux headers $package"
+		sudo apt-get install -y $package >> $logfile 2>&1
 	else
-        log "$package not found, using generic kernel headers"
-        package="linux-headers-generic"
+        log "$package not found, using kernel version $defkerver"
+        kerver=$defkerver
 	fi
-	log "Installing Linux headers $package"
-	sudo apt-get install -y $package >> $logfile 2>&1
 	log "Installing required build packages"
 	sudo apt-get install -y libtool pkg-config autoconf-archive python3-dev >> $logfile 2>&1
 	# Move to home dir
@@ -83,10 +87,10 @@ if [ ! -d "$curdir/../../libgpiod" ]; then
 	cd libgpiod >> $logfile 2>&1
 	# Add header file missing from Linux user space includes
 	mkdir -p $curdir/include/linux >> $logfile 2>&1
-	cp /usr/src/linux-headers-$(uname -r)/include/linux/compiler_types.h $curdir/include/linux/. >> $logfile 2>&1	
+	cp /usr/src/linux-headers-$kerver/include/linux/compiler_types.h $curdir/include/linux/. >> $logfile 2>&1	
 	log "Running autogen"
 	export PYTHON_VERSION=3
-	./autogen.sh --enable-tools=yes --enable-bindings-python --prefix=/usr/local CFLAGS="-I/usr/src/linux-headers-$(uname -r)/include/uapi -I$curdir/include" >> $logfile 2>&1
+	./autogen.sh --enable-tools=yes --enable-bindings-python --prefix=/usr/local CFLAGS="-I/usr/src/linux-headers-$kerver/include/uapi -I$curdir/include" >> $logfile 2>&1
 	log "Running make"
 	make >> $logfile 2>&1
 	log "Make install"
