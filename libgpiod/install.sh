@@ -65,8 +65,6 @@ if [ ! -d "$curdir/../../libgpiod" ]; then
     # If usegitrepo is True then clone libgpiod, if False then use archive.
     if [ "$usegitrepo" = "True" ]; then	
 		log "Cloning libgpiod master"
-		# Test fix for threading issue
-		#git clone https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git >> $logfile 2>&1
 		git clone $libgpiodgiturl >> $logfile 2>&1
 	else
 		# Clean up
