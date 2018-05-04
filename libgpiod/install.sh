@@ -55,7 +55,6 @@ if [ ! -d "$curdir/../../libgpiod" ]; then
 	# Check if package exists
 	if apt-cache search "$package" | grep "$package"
 	then	
-	if [[ $(apt-cache search "$package" | grep "$package") ]]; then
         log "$package found"
         kerver=$(uname -r)
 		log "Installing Linux headers $package"
