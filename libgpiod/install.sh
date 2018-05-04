@@ -49,6 +49,13 @@ if [ ! -d "$curdir/../../libgpiod" ]; then
         log "Armbian not detected"
 		package="linux-headers-`uname -r`"
 	fi
+	# Check if package exists
+	if [[ $(apt-cache search "$package" | grep "$package") ]]; then
+        log "$package found"
+	else
+        log "$package not found, using generic kernel headers"
+        package="linux-headers-generic"
+	fi
 	log "Installing Linux headers $package"
 	sudo apt-get install -y $package >> $logfile 2>&1
 	log "Installing required build packages"
