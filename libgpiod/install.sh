@@ -53,6 +53,8 @@ if [ ! -d "$curdir/../../libgpiod" ]; then
 		package="linux-headers-`uname -r`"
 	fi
 	# Check if package exists
+	if apt-cache search "$package" | grep "$package"
+	then	
 	if [[ $(apt-cache search "$package" | grep "$package") ]]; then
         log "$package found"
         kerver=$(uname -r)
