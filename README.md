@@ -92,7 +92,7 @@ structures behind a straightforward API.
 
 Edit [install.sh](https://github.com/sgjava/userspaceio/blob/master/libgpiod/install.sh)
 * `usegitrepo` to use libgpiod-1.0.1.tar.gz or git master (defaut).
-* `defkerver` to use specify pre-installed kernal headers. You need to do this
+* `defkerver` to specify pre-installed kernal headers. You need to do this
 if header files are not located by /etc/armbian-release or uname -r methods. Use
 something like `apt-cache search linux-headers-* | grep -i "4.16"` (change
 version number) to find header version to match your kernel.
