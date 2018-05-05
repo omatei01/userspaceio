@@ -13,9 +13,6 @@ SBC model. The possibility of using other JVM based languages such as Groovy,
 Kotlin, Scala, etc. opens up language opprtunties that do not currently exist
 in the IoT space.
 
-**Master branch is using libgpiod 1.1. Use 1.0 branch for libgpiod
-1.0 support.**
-
 ### SBC configuration
 * If you are using Armbian then use `armbian-config` or edit `/boot/armbianEnv.txt`
 to configure various devices. User space devices are exposed through /dev or
@@ -89,6 +86,9 @@ is a C library and tools for interacting with the linux GPIO character device.
 Since linux 4.8 the GPIO sysfs interface is deprecated. User space should use
 the character device instead. libgpiod encapsulates the ioctl calls and data
 structures behind a straightforward API.
+
+**Master branch is using libgpiod 1.1. Use 1.0 branch for libgpiod
+1.0 support.**
 
 Edit [install.sh](https://github.com/sgjava/userspaceio/blob/master/libgpiod/install.sh)
 * `usegitrepo` to use libgpiod-1.0.1.tar.gz or git master (defaut).
