@@ -88,13 +88,14 @@ chmod -R ug+rw /dev/spidev1.0</code></pre>
 is a C library and tools for interacting with the linux GPIO character device.
 Since linux 4.8 the GPIO sysfs interface is deprecated. User space should use
 the character device instead. libgpiod encapsulates the ioctl calls and data
-structures behind a straightforward API. **Note:** Edit `usegitrepo` in
-[install.sh](https://github.com/sgjava/userspaceio/blob/master/libgpiod/install.sh)
-to use libgpiod-1.0.1.tar.gz (defaut) or git branch v1.0.x.
+structures behind a straightforward API.
 
-Since libgpiod is not currently present in most Linux distributions you need to
-build it from source. This project automates the build process on Armbian, but
-should build on your faviorite Debian Linux distribution.
+Edit [install.sh](https://github.com/sgjava/userspaceio/blob/master/libgpiod/install.sh)
+* `usegitrepo` to use libgpiod-1.0.1.tar.gz or git master (defaut).
+* `defkerver` to use specify pre-installed kernal headers. You need to do this
+if header files are not located by /etc/armbian-release or uname -r methods. Use
+something like `apt-cache search linux-headers-* | grep -i "4.16"` (change
+version number) to find header version to match your kernel.
 
 #### How pins are mapped
 This is based on testing on a NanoPi Duo. gpiochip0 starts at 0 and gpiochip1
