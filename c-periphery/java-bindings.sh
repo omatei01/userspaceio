@@ -40,6 +40,7 @@ else
 		java -jar ../../jnaerator/jnaerator.jar -library peripheryi2c -mode Directory -runtime JNA -preferJavac -beanStructs -noLibBundle /usr/local/lib/libperipheryi2c.so /usr/include/arm-linux-gnueabihf/asm/types.h /usr/include/linux/types.h  /usr/include/linux/i2c.h ../../../c-periphery/src/i2c.h >> $logfile 2>&1
 		java -jar ../../jnaerator/jnaerator.jar -library peripheryserial -mode Directory -runtime JNA -preferJavac -beanStructs -noLibBundle /usr/local/lib/libperipheryserial.so /usr/include/linux/spi/spidev.h ../../../c-periphery/src/serial.h >> $logfile 2>&1
 		java -jar ../../jnaerator/jnaerator.jar -library peripheryspi -mode Directory -runtime JNA -preferJavac -beanStructs -noLibBundle /usr/local/lib/libperipheryspi.so ../../../c-periphery/src/spi.h >> $logfile 2>&1
+		java -jar ../../jnaerator/jnaerator.jar -library peripherymmio -mode Directory -runtime JNA -preferJavac -beanStructs -noLibBundle /usr/local/lib/libperipherymmio.so ../../../c-periphery/src/mmio.h >> $logfile 2>&1
 
 		# Patch getFieldOrder(), see https://github.com/nativelibs4java/JNAerator/pull/111/commits/a2b0ae821369d6efed896627dccc1fa1f9677556
 		log "Patching generated source"
@@ -55,10 +56,10 @@ else
 		# Compile library
 		log "Compile library"
 		cd ../ >> $logfile 2>&1
-		javac -cp ../../jnaerator/jna-4.5.0.jar:../../jnaerator/jnaerator-runtime.jar peripheryi2c/*.java peripheryserial/*.java peripheryspi/*.java >> $logfile 2>&1
+		javac -cp ../../jnaerator/jna-4.5.0.jar:../../jnaerator/jnaerator-runtime.jar peripheryi2c/*.java peripheryserial/*.java peripheryspi/*.java peripherymmio/*.java >> $logfile 2>&1
 
 		# Create package
-		/usr/lib/jvm/jdk1.8.0/bin/jar cf libperiphery.jar peripheryi2c/*.* peripheryserial/*.* peripheryspi/*.* >> $logfile 2>&1
+		/usr/lib/jvm/jdk1.8.0/bin/jar cf libperiphery.jar peripheryi2c/*.* peripheryserial/*.* peripheryspi/*.* peripherymmio/*.* >> $logfile 2>&1
 	fi
 fi
 
