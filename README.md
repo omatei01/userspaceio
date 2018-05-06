@@ -1,7 +1,7 @@
 ![Title](images/title.png)
 
 User Space IO is Python 3 and Java 8 bindings for Linux user space GPIO, SPI,
-I2C, PWM and Serial interfaces. Using best of breed user space C libraries
+I2C, PWM, MMIO and Serial interfaces. Using best of breed user space C libraries
 provides a cross platform solution to SBC development. Primarly User Space IO
 will be targeting [Armbian](https://www.armbian.com), but the scripts should
 work with most Ubuntu/Debian distributions. Demo applications are included that
@@ -139,10 +139,9 @@ to run LED test after wiring up to line 203 (GPIOG11) on NanoPi Duo (the default
 
 ## c-periphery
 [c-periphery](https://github.com/vsergeev/c-periphery) is used to provide SPI,
-I2C and Serial interfaces. I did not use the GPIO because it is based on the
-oudated sysfs interface. Also the MMIO was not used since it requires a AM335x
-processor. Helper methods were added to the objects to remove some repetitive
-operations (i.e. building I2C messages to read/write registers).
+I2C, MMIO and Serial interfaces. I did not use the GPIO because it is based on the
+oudated sysfs interface. Helper methods were added to the objects to remove some
+repetitive operations (i.e. building I2C messages to read/write registers).
 
 #### Python bindings
 To run demos:
